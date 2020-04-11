@@ -17,15 +17,15 @@ class Login extends Component {
         config: {
           name: 'email_input',
           type: 'email',
-          placeholder: 'Enter your email'
+          placeholder: 'Enter your email',
         },
         validation: {
           required: true,
-          email: true
+          email: true,
         },
         valid: false,
         touched: false,
-        validationMessage: ''
+        validationMessage: '',
       },
       password: {
         element: 'input',
@@ -33,46 +33,46 @@ class Login extends Component {
         config: {
           name: 'password_input',
           type: 'password',
-          placeholder: 'Enter your password'
+          placeholder: 'Enter your password',
         },
         validation: {
-          required: true
+          required: true,
         },
         valid: false,
         touched: false,
-        validationMessage: ''
-      }
-    }
+        validationMessage: '',
+      },
+    },
   };
 
-  updateForm = element => {
+  updateForm = (element) => {
     const newFormdata = update(element, this.state.formdata, 'login');
     this.setState({
       formError: false,
-      formdata: newFormdata
+      formdata: newFormdata,
     });
   };
 
-  submitForm = event => {
+  submitForm = (event) => {
     event.preventDefault();
 
     let dataToSubmit = generateData(this.state.formdata, 'login');
     let formIsValid = isFormValid(this.state.formdata, 'login');
 
     if (formIsValid) {
-      this.props.dispatch(loginUser(dataToSubmit)).then(response => {
+      this.props.dispatch(loginUser(dataToSubmit)).then((response) => {
         if (response.payload.loginSuccess) {
           console.log(response.payload);
           this.props.history.push('/user/dashboard');
         } else {
           this.setState({
-            formError: true
+            formError: true,
           });
         }
       });
     } else {
       this.setState({
-        formError: true
+        formError: true,
       });
     }
   };
@@ -80,21 +80,27 @@ class Login extends Component {
   render() {
     return (
       <div className='signin_wrapper'>
-        <form onSubmit={event => this.props.submitForm(event)}>
+        <form onSubmit={(event) => this.props.submitForm(event)}>
           <FormField
             id={'email'}
             formdata={this.state.formdata.email}
-            change={element => this.updateForm(element)}
+            change={(element) => this.updateForm(element)}
           />
           <FormField
             id={'password'}
             formdata={this.state.formdata.password}
-            change={element => this.updateForm(element)}
+            change={(element) => this.updateForm(element)}
           />
           {this.state.formError ? (
             <div className='error_label'>Please check your data</div>
           ) : null}
-          <button onClick={event => this.submitForm(event)}>Log in</button>
+          <button onClick={(event) => this.submitForm(event)}>Log in</button>
+          <button
+            style={{ marginLeft: '10px' }}
+            onClick={() => this.props.history.push('/reset_user')}
+          >
+            Forgot my password
+          </button>
         </form>
       </div>
     );
